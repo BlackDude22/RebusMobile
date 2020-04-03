@@ -1,6 +1,5 @@
 package com.example.rebusmobile;
 
-
 import android.content.Context;
 
 import com.android.volley.NetworkResponse;
@@ -22,9 +21,19 @@ public class RebusNeoConnector {
     private String url;
     final RequestQueue queue;
 
-    public RebusNeoConnector(Context context){
+    static RebusNeoConnector instance = null;
+
+    private RebusNeoConnector(Context context){
         url ="http://rebus.sytes.net/testflight";
         queue = Volley.newRequestQueue(context);
+    }
+
+    public static RebusNeoConnector getInstance(Context context)
+    {
+        if (instance == null)
+            instance = new RebusNeoConnector(context);
+
+        return instance;
     }
 
     public void SendRequest(JSONObject request, final IResponseListener listener)

@@ -11,12 +11,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RebusNeoConnector connector = RebusNeoConnector.getInstance(this);
 
-        RebusNeoConnector connector = new RebusNeoConnector(this);
         connector.SendRequest(null, new IResponseListener() {
             @Override
             public void onResponse(Object response) {
-                TextView text = (TextView)findViewById(R.id.test);
+                TextView text = findViewById(R.id.test);
                 text.setText(response.toString());
             }
             @Override
