@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">RebusMobile</string>
+    <string name="departure_airport_missing_error">Missing</string>
+    <string name="arrival_airport_missing_error">Missing</string>
+    <string name="departure_date_missing_error">Missing</string>
+    <string name="arrival_date_missing_error">Missing</string>
+    <string name="passenger_missing_error">Missing</string>
 </resources>

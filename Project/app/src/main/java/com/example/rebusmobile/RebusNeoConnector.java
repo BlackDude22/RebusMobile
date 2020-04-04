@@ -1,6 +1,7 @@
 package com.example.rebusmobile;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -21,10 +22,13 @@ public class RebusNeoConnector {
     private String url;
     final RequestQueue queue;
 
+    final public String GET_AIRPORTS = "/locations";
+    final public String REQUEST_FLIGTS = "/journey";
+
     static RebusNeoConnector instance = null;
 
     private RebusNeoConnector(Context context){
-        url ="http://rebus.sytes.net/testflight";
+        url ="http://rebus.sytes.net";
         queue = Volley.newRequestQueue(context);
     }
 
@@ -36,10 +40,15 @@ public class RebusNeoConnector {
         return instance;
     }
 
-    public void SendRequest(JSONObject request, final IResponseListener listener)
+    public void SendRequest(String action, String request, final IResponseListener listener)
     {
+        String completeAction = url + action;
+        if (request != null)
+            completeAction += request;
+
+        Log.v("nx", completeAction);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (url, request, new Response.Listener<JSONObject>() {
+                (completeAction, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -69,5 +78,10 @@ public class RebusNeoConnector {
         };
 
         queue.add(jsonObjectRequest);
+    }
+
+    public String getJourneyRequest(String origin, String destination, String depDate, String retDate, String isOneWay, String onlyDirect)
+    {
+        return "?origin=" + origin + "&destination=" + destination + "&depDate=" + depDate + "&retDate=" + retDate + "&isOneWay=" + isOneWay + "&onlyDirect=" + onlyDirect;
     }
 }

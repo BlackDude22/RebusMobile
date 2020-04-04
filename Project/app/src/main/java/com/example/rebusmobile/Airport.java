@@ -17,11 +17,13 @@ public class Airport {
     @Override
     public String toString()
     {
-        return code + ' ' + name + ' ' + city + ' ' + country;
+        return name + " (" + code + "), " + city + ", " + country;
     }
 
     public String getName()
     {
         return name + " (" + code + ")";
     }
+
+    public String getCode() { return code; }
 }
