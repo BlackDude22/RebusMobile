@@ -1,7 +1,6 @@
 package com.example.rebusmobile;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -23,7 +22,7 @@ public class RebusNeoConnector {
     final RequestQueue queue;
 
     final public String GET_AIRPORTS = "/locations";
-    final public String REQUEST_FLIGTS = "/journey";
+    final public String REQUEST_FLIGHTS = "/journey";
 
     static RebusNeoConnector instance = null;
 
@@ -46,7 +45,6 @@ public class RebusNeoConnector {
         if (request != null)
             completeAction += request;
 
-        Log.v("nx", completeAction);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (completeAction, null, new Response.Listener<JSONObject>() {
 

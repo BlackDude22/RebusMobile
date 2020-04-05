@@ -1,17 +1,25 @@
 package com.example.rebusmobile;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Airport {
     private String code;
     private String name;
     private String city;
     private String country;
 
-    public Airport(String code, String name, String city, String country)
+    public Airport(JSONObject airport)
     {
-        this.code = code;
-        this.name = name;
-        this.city = city;
-        this.country = country;
+        CountryMap countryMap = CountryMap.getInstance();
+        try {
+            code = airport.getString("code");
+            name = airport.getString("fullName");
+            city = airport.getString("cityName");
+            country = countryMap.get(airport.getString("countryName"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

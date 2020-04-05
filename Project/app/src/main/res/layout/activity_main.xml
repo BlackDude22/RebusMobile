@@ -10,7 +10,7 @@
         android:id="@+id/arrivalSearchBox"
         android:layout_width="372dp"
         android:layout_height="44dp"
-        android:completionThreshold="1"
+        android:completionThreshold="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
         android:id="@+id/departureSearchBox"
         android:layout_width="372dp"
         android:layout_height="44dp"
-        android:completionThreshold="1"
+        android:completionThreshold="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="80dp"
-        android:text="Arrival date"
+        android:text="Return date"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/arrivalSearchBox" />
@@ -131,6 +131,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passengersEditText"
         app:layout_constraintVertical_bias="0.046" />
+
+    <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
