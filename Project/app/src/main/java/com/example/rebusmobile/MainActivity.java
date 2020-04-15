@@ -8,9 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private String departureDate = null;
     private String arrivalDate = null;
     private Integer numberOfPassengers = null;
+    private boolean isOneWay = false;
+    private boolean allowOnlyDirectFlights = false;
 
 
     @Override
@@ -44,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         final EditText departureDatePicker = findViewById(R.id.departureDatePicker);
         final EditText arrivalDatePicker = findViewById(R.id.arrivalDatePicker);
         final EditText passengerEditText = findViewById(R.id.passengersEditText);
+        final CheckBox onlyDirectCheckBox = findViewById(R.id.onlyDirectCheckBox);
+
+        final Button submitButton = findViewById(R.id.submitButton);
+        final Button clearButton = findViewById(R.id.clearDates);
 
         RebusNeoConnector connector = RebusNeoConnector.getInstance(this);
 
@@ -55,15 +61,15 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String message) {
-                ((TextView)findViewById(R.id.textViewError)).setText(message);
-                JSONObject response = null;
-                try {
-                    response = new JSONObject("{\"Header\":{\"ResponseError\":{\"ErrorCode\":0,\"ErrorMessage\":\"\"}},\"ResponseBody\":{\"Entities\":[{\"airports\":[{\"fullName\":\"Barcelona El Prat Airport\",\"type\":\"Airport\",\"code\":\"BCN\",\"cityName\":\"Barcelona\",\"countryName\":\"ES\"},{\"fullName\":\"London-Gatwick Airport\",\"type\":\"Airport\",\"code\":\"LGW\",\"cityName\":\"London\",\"countryName\":\"GB\"},{\"fullName\":\"Munich Airport\",\"type\":\"Airport\",\"code\":\"MUC\",\"cityName\":\"Munich\",\"countryName\":\"DE\"},{\"fullName\":\"Leonardo da Vinci-Fiumicino Airport\",\"type\":\"Airport\",\"code\":\"FCO\",\"cityName\":\"Rome\",\"countryName\":\"IT\"},{\"fullName\":\"Sheremetyevo International Airport\",\"type\":\"Airport\",\"code\":\"SVO\",\"cityName\":\"Moscow\",\"countryName\":\"RU\"},{\"fullName\":\"Paris-Orly Airport\",\"type\":\"Airport\",\"code\":\"ORY\",\"cityName\":\"Paris\",\"countryName\":\"FR\"},{\"fullName\":\"Brussels Airport\",\"type\":\"Airport\",\"code\":\"BRU\",\"cityName\":\"Brussels\",\"countryName\":\"BE\"},{\"fullName\":\"Helsinki Airport\",\"type\":\"Airport\",\"code\":\"HEL\",\"cityName\":\"Helsinki\",\"countryName\":\"FI\"},{\"fullName\":\"Luton Airport\",\"type\":\"Airport\",\"code\":\"LTN\",\"cityName\":\"London\",\"countryName\":\"GB\"},{\"fullName\":\"Hartsfield-Jackson Atlanta International Airport\",\"type\":\"Airport\",\"code\":\"ATL\",\"cityName\":\"Atlanta\",\"countryName\":\"US\"},{\"fullName\":\"Heathrow Airport\",\"type\":\"Airport\",\"code\":\"LHR\",\"cityName\":\"London\",\"countryName\":\"GB\"},{\"fullName\":\"Charles de Gaulle Airport\",\"type\":\"Airport\",\"code\":\"CDG\",\"cityName\":\"Paris\",\"countryName\":\"FR\"},{\"fullName\":\"Amsterdam Airport Schiphol\",\"type\":\"Airport\",\"code\":\"AMS\",\"cityName\":\"Amsterdam\",\"countryName\":\"NL\"},{\"fullName\":\"Frankfurt Airport\",\"type\":\"Airport\",\"code\":\"FRA\",\"cityName\":\"Frankfurt\",\"countryName\":\"DE\"},{\"fullName\":\"Istanbul Ataturk Airport\",\"type\":\"Airport\",\"code\":\"ISL\",\"cityName\":\"Istanbul\",\"countryName\":\"TR\"},{\"fullName\":\"Adolfo Suarez Madrid-Barajas Airport\",\"type\":\"Airport\",\"code\":\"MAD\",\"cityName\":\"Madrid\",\"countryName\":\"ES\"},{\"fullName\":\"Copenhagen Airport\",\"type\":\"Airport\",\"code\":\"CPH\",\"cityName\":\"Copenhagen\",\"countryName\":\"DK\"},{\"fullName\":\"LaGuardia Airport\",\"type\":\"Airport\",\"code\":\"LGA\",\"cityName\":\"New York City\",\"countryName\":\"US\"},{\"fullName\":\"Chicago OHare International Airport\",\"type\":\"Airport\",\"code\":\"ORD\",\"cityName\":\"Chicago\",\"countryName\":\"US\"},{\"fullName\":\"Los Angeles International Airport\",\"type\":\"Airport\",\"code\":\"LAX\",\"cityName\":\"Los Angeles\",\"countryName\":\"US\"},{\"fullName\":\"John F. Kennedy International Airport\",\"type\":\"Airport\",\"code\":\"JFK\",\"cityName\":\"New York City\",\"countryName\":\"US\"},{\"fullName\":\"Denver International Airport\",\"type\":\"Airport\",\"code\":\"DEN\",\"cityName\":\"Denver\",\"countryName\":\"US\"},{\"fullName\":\"Washington Dulles International Airport\",\"type\":\"Airport\",\"code\":\"IAD\",\"cityName\":\"Washington\",\"countryName\":\"US\"},{\"fullName\":\"Toronto Pearson International Airport\",\"type\":\"Airport\",\"code\":\"YYZ\",\"cityName\":\"Toronto\",\"countryName\":\"CA\"},{\"fullName\":\"Beijing Capital International Airport\",\"type\":\"Airport\",\"code\":\"PEK\",\"cityName\":\"Beijing\",\"countryName\":\"CN\"},{\"fullName\":\"Sydney Airport\",\"type\":\"Airport\",\"code\":\"SYD\",\"cityName\":\"Sydney\",\"countryName\":\"AU\"},{\"fullName\":\"Auckland Airport\",\"type\":\"Airport\",\"code\":\"AKL\",\"cityName\":\"Auckland\",\"countryName\":\"NZ\"}],\"countries\":[{\"fullName\":\"United Kingdom\",\"type\":\"Country\",\"code\":\"GB\",\"flag\":\"\"},{\"fullName\":\"France\",\"type\":\"Country\",\"code\":\"FR\",\"flag\":\"\"},{\"fullName\":\"Netherlands\",\"type\":\"Country\",\"code\":\"NL\",\"flag\":\"\"},{\"fullName\":\"Germany\",\"type\":\"Country\",\"code\":\"DE\",\"flag\":\"\"},{\"fullName\":\"Turkey\",\"type\":\"Country\",\"code\":\"TR\",\"flag\":\"\"},{\"fullName\":\"Spain\",\"type\":\"Country\",\"code\":\"ES\",\"flag\":\"\"},{\"fullName\":\"Italy\",\"type\":\"Country\",\"code\":\"IT\",\"flag\":\"\"},{\"fullName\":\"Russia\",\"type\":\"Country\",\"code\":\"RU\",\"flag\":\"\"},{\"fullName\":\"Denmark\",\"type\":\"Country\",\"code\":\"DK\",\"flag\":\"\"},{\"fullName\":\"Belgium\",\"type\":\"Country\",\"code\":\"BE\",\"flag\":\"\"},{\"fullName\":\"Finland\",\"type\":\"Country\",\"code\":\"FI\",\"flag\":\"\"},{\"fullName\":\"USA\",\"type\":\"Country\",\"code\":\"US\",\"flag\":\"\"},{\"fullName\":\"Canada\",\"type\":\"Country\",\"code\":\"CA\",\"flag\":\"\"},{\"fullName\":\"China\",\"type\":\"Country\",\"code\":\"CN\",\"flag\":\"\"},{\"fullName\":\"Australia\",\"type\":\"Country\",\"code\":\"AU\",\"flag\":\"\"},{\"fullName\":\"New Zeland\",\"type\":\"Country\",\"code\":\"NZ\",\"flag\":\"\"}]}]}}");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                loadSearchSuggestions(response);
-                bindSearchSuggestions(departureTextView, arrivalTextView);
+//                ((TextView)findViewById(R.id.textViewError)).setText(message);
+//                JSONObject response = null;
+//                try {
+//                    response = new JSONObject("{\"Header\":{\"ResponseError\":{\"ErrorCode\":0,\"ErrorMessage\":\"\"}},\"ResponseBody\":{\"Entities\":[{\"airports\":[{\"fullName\":\"Barcelona El Prat Airport\",\"type\":\"Airport\",\"code\":\"BCN\",\"cityName\":\"Barcelona\",\"countryName\":\"ES\"},{\"fullName\":\"London-Gatwick Airport\",\"type\":\"Airport\",\"code\":\"LGW\",\"cityName\":\"London\",\"countryName\":\"GB\"},{\"fullName\":\"Munich Airport\",\"type\":\"Airport\",\"code\":\"MUC\",\"cityName\":\"Munich\",\"countryName\":\"DE\"},{\"fullName\":\"Leonardo da Vinci-Fiumicino Airport\",\"type\":\"Airport\",\"code\":\"FCO\",\"cityName\":\"Rome\",\"countryName\":\"IT\"},{\"fullName\":\"Sheremetyevo International Airport\",\"type\":\"Airport\",\"code\":\"SVO\",\"cityName\":\"Moscow\",\"countryName\":\"RU\"},{\"fullName\":\"Paris-Orly Airport\",\"type\":\"Airport\",\"code\":\"ORY\",\"cityName\":\"Paris\",\"countryName\":\"FR\"},{\"fullName\":\"Brussels Airport\",\"type\":\"Airport\",\"code\":\"BRU\",\"cityName\":\"Brussels\",\"countryName\":\"BE\"},{\"fullName\":\"Helsinki Airport\",\"type\":\"Airport\",\"code\":\"HEL\",\"cityName\":\"Helsinki\",\"countryName\":\"FI\"},{\"fullName\":\"Luton Airport\",\"type\":\"Airport\",\"code\":\"LTN\",\"cityName\":\"London\",\"countryName\":\"GB\"},{\"fullName\":\"Hartsfield-Jackson Atlanta International Airport\",\"type\":\"Airport\",\"code\":\"ATL\",\"cityName\":\"Atlanta\",\"countryName\":\"US\"},{\"fullName\":\"Heathrow Airport\",\"type\":\"Airport\",\"code\":\"LHR\",\"cityName\":\"London\",\"countryName\":\"GB\"},{\"fullName\":\"Charles de Gaulle Airport\",\"type\":\"Airport\",\"code\":\"CDG\",\"cityName\":\"Paris\",\"countryName\":\"FR\"},{\"fullName\":\"Amsterdam Airport Schiphol\",\"type\":\"Airport\",\"code\":\"AMS\",\"cityName\":\"Amsterdam\",\"countryName\":\"NL\"},{\"fullName\":\"Frankfurt Airport\",\"type\":\"Airport\",\"code\":\"FRA\",\"cityName\":\"Frankfurt\",\"countryName\":\"DE\"},{\"fullName\":\"Istanbul Ataturk Airport\",\"type\":\"Airport\",\"code\":\"ISL\",\"cityName\":\"Istanbul\",\"countryName\":\"TR\"},{\"fullName\":\"Adolfo Suarez Madrid-Barajas Airport\",\"type\":\"Airport\",\"code\":\"MAD\",\"cityName\":\"Madrid\",\"countryName\":\"ES\"},{\"fullName\":\"Copenhagen Airport\",\"type\":\"Airport\",\"code\":\"CPH\",\"cityName\":\"Copenhagen\",\"countryName\":\"DK\"},{\"fullName\":\"LaGuardia Airport\",\"type\":\"Airport\",\"code\":\"LGA\",\"cityName\":\"New York City\",\"countryName\":\"US\"},{\"fullName\":\"Chicago OHare International Airport\",\"type\":\"Airport\",\"code\":\"ORD\",\"cityName\":\"Chicago\",\"countryName\":\"US\"},{\"fullName\":\"Los Angeles International Airport\",\"type\":\"Airport\",\"code\":\"LAX\",\"cityName\":\"Los Angeles\",\"countryName\":\"US\"},{\"fullName\":\"John F. Kennedy International Airport\",\"type\":\"Airport\",\"code\":\"JFK\",\"cityName\":\"New York City\",\"countryName\":\"US\"},{\"fullName\":\"Denver International Airport\",\"type\":\"Airport\",\"code\":\"DEN\",\"cityName\":\"Denver\",\"countryName\":\"US\"},{\"fullName\":\"Washington Dulles International Airport\",\"type\":\"Airport\",\"code\":\"IAD\",\"cityName\":\"Washington\",\"countryName\":\"US\"},{\"fullName\":\"Toronto Pearson International Airport\",\"type\":\"Airport\",\"code\":\"YYZ\",\"cityName\":\"Toronto\",\"countryName\":\"CA\"},{\"fullName\":\"Beijing Capital International Airport\",\"type\":\"Airport\",\"code\":\"PEK\",\"cityName\":\"Beijing\",\"countryName\":\"CN\"},{\"fullName\":\"Sydney Airport\",\"type\":\"Airport\",\"code\":\"SYD\",\"cityName\":\"Sydney\",\"countryName\":\"AU\"},{\"fullName\":\"Auckland Airport\",\"type\":\"Airport\",\"code\":\"AKL\",\"cityName\":\"Auckland\",\"countryName\":\"NZ\"}],\"countries\":[{\"fullName\":\"United Kingdom\",\"type\":\"Country\",\"code\":\"GB\",\"flag\":\"\"},{\"fullName\":\"France\",\"type\":\"Country\",\"code\":\"FR\",\"flag\":\"\"},{\"fullName\":\"Netherlands\",\"type\":\"Country\",\"code\":\"NL\",\"flag\":\"\"},{\"fullName\":\"Germany\",\"type\":\"Country\",\"code\":\"DE\",\"flag\":\"\"},{\"fullName\":\"Turkey\",\"type\":\"Country\",\"code\":\"TR\",\"flag\":\"\"},{\"fullName\":\"Spain\",\"type\":\"Country\",\"code\":\"ES\",\"flag\":\"\"},{\"fullName\":\"Italy\",\"type\":\"Country\",\"code\":\"IT\",\"flag\":\"\"},{\"fullName\":\"Russia\",\"type\":\"Country\",\"code\":\"RU\",\"flag\":\"\"},{\"fullName\":\"Denmark\",\"type\":\"Country\",\"code\":\"DK\",\"flag\":\"\"},{\"fullName\":\"Belgium\",\"type\":\"Country\",\"code\":\"BE\",\"flag\":\"\"},{\"fullName\":\"Finland\",\"type\":\"Country\",\"code\":\"FI\",\"flag\":\"\"},{\"fullName\":\"USA\",\"type\":\"Country\",\"code\":\"US\",\"flag\":\"\"},{\"fullName\":\"Canada\",\"type\":\"Country\",\"code\":\"CA\",\"flag\":\"\"},{\"fullName\":\"China\",\"type\":\"Country\",\"code\":\"CN\",\"flag\":\"\"},{\"fullName\":\"Australia\",\"type\":\"Country\",\"code\":\"AU\",\"flag\":\"\"},{\"fullName\":\"New Zeland\",\"type\":\"Country\",\"code\":\"NZ\",\"flag\":\"\"}]}]}}");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                loadSearchSuggestions(response);
+//                bindSearchSuggestions(departureTextView, arrivalTextView);
             }
         });
 
@@ -111,11 +117,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        final Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String passengerText = passengerEditText.getText().toString();
+                allowOnlyDirectFlights = onlyDirectCheckBox.isChecked();
+//                isOneWay = !allowReturnFlightsCheckBox.isChecked();
+                if (arrivalDate != null)
+                    isOneWay = false;
+                else isOneWay = true;
+
                 if (!passengerText.isEmpty())
                     numberOfPassengers =  Integer.parseInt(passengerText);
 
@@ -135,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
                     hasErrors = true;
                 }
 
-                if (arrivalDate == null){
-                    arrivalDatePicker.setError(getString(R.string.arrival_date_missing_error));
-                    hasErrors = true;
-                }
+//                if (arrivalDate == null && !isOneWay){
+//                    arrivalDatePicker.setError(getString(R.string.arrival_date_missing_error));
+//                    hasErrors = true;
+//                }
 
 //                if (numberOfPassengers == null){
 //                    passengerEditText.setError(getString(R.string.passenger_missing_error));
@@ -154,7 +165,19 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("DEPARTURE_DATE", departureDate);
                 intent.putExtra("ARRIVAL_DATE", arrivalDate);
                 intent.putExtra("NUMBER_OF_PASSENGERS", numberOfPassengers);
+                intent.putExtra("ONLY_DIRECT", Boolean.toString(allowOnlyDirectFlights));
+                intent.putExtra("IS_ONE_WAY", Boolean.toString(isOneWay));
                 startActivity(intent);
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                departureDatePicker.getText().clear();
+                arrivalDatePicker.getText().clear();
+                arrivalDate = null;
+                departureDate = null;
             }
         });
     }

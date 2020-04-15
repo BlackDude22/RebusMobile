@@ -27,74 +27,97 @@
                 android:layout_gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:weightSum="2">
+                android:stretchColumns="*"
+                android:shrinkColumns="*" >
 
-                <TableRow>
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="144dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="From" />
+                        android:text="From"
+                        android:layout_weight="3"/>
 
                     <TextView
-                        android:layout_width="33dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="131dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="To" />
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="To"
+                        android:layout_weight="3"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
 
                 </TableRow>
 
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/cardToDepartureAirport"
-                        android:layout_width="76dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="City (CODE)" />
+                        android:text="City (CODE)"
+                        android:layout_weight="3"/>
 
                     <TextView
                         android:id="@+id/cardToStops"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Stops" />
+                        android:text="Stops"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/cardToArrivalAirport"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="City (CODE)" />
+                        android:text="City (CODE)"
+                        android:layout_weight="3"/>
 
                     <TextView
                         android:id="@+id/cardToPrice"
-                        android:layout_width="63dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Price" />
+                        android:text="Price"
+                        android:layout_weight="2"/>
                 </TableRow>
 
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/cardToDepartureTime"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Departure Time" />
+                        android:text="Dep Time"
+                        android:layout_weight="3"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/cardToArrivalTime"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Arrival Time" />
+                        android:text="Arrival Time"
+                        android:layout_weight="3"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
                 </TableRow>
             </TableLayout>
         </LinearLayout>

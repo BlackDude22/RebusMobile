@@ -19,8 +19,8 @@ public class Flight {
             code = flight.getString("flightCode");
             departureAirport = new Airport(flight.getJSONObject("fromAirport"));
             arrivalAirport = new Airport(flight.getJSONObject("toAirport"));
-            departureTime = flight.getString("departs");
-            arrivalTime = flight.getString("arrives");
+            departureTime = flight.getString("departs").replace('T', ' ');
+            arrivalTime = flight.getString("arrives").replace('T', ' ');
             price = flight.getString("price");
         } catch (JSONException e) {
             e.printStackTrace();

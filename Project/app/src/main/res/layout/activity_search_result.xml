@@ -9,21 +9,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/cardContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:shadowColor="#000"
-            android:shadowDx="0"
-            android:shadowDy="30"
-            android:shadowRadius="50">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order by"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/sortByCheapest"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cheapest" />
+
+                <Button
+                    android:id="@+id/sortByMostExpensive"
+                    android:layout_width="214dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Best" />
+
+                <Button
+                    android:id="@+id/sortByShortest"
+                    android:layout_width="198dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Shortest" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:weightSum="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="30"
+                android:shadowRadius="50">
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
