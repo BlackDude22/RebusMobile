@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -29,6 +30,12 @@ public class SearchResultActivity extends AppCompatActivity {
     private String isOneWay;
     private String onlyDirect;
     private Integer numberOfPassengers;
+    private int currentCardCount = 0;
+    private int nextCardCount = 5;
+    private Button showMoreButton;
+    private Button sortByCheapestButton;
+    private Button sortByMostExpensiveButton;
+    private Button sortByShortestButton;
 
     ArrayList<Journey> journeys = new ArrayList<>();
 
@@ -67,9 +74,10 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
-        Button sortByCheapestButton = findViewById(R.id.sortByCheapest);
-        Button sortByMostExpensiveButton = findViewById(R.id.sortByMostExpensive);
-        Button sortByShortestButton = findViewById(R.id.sortByShortest);
+        showMoreButton = findViewById(R.id.showMoreButton);
+        sortByCheapestButton = findViewById(R.id.sortByCheapest);
+        sortByMostExpensiveButton = findViewById(R.id.sortByMostExpensive);
+        sortByShortestButton = findViewById(R.id.sortByShortest);
 
         sortByCheapestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +87,9 @@ public class SearchResultActivity extends AppCompatActivity {
                         return o1.getPrice().compareTo(o2.getPrice());
                     }
                 });
+                currentCardCount = 0;
+                nextCardCount = 5;
+                clearCards();
                 createJourneyCards();
             }
         });
@@ -91,6 +102,9 @@ public class SearchResultActivity extends AppCompatActivity {
 //                        return o2.getPrice().compareTo(o1.getPrice());
 //                    }
 //                });
+//                currentCardCount = 0;
+//                nextCardCount = 5;
+//                clearCards();
 //                createJourneyCards();
             }
         });
@@ -103,6 +117,17 @@ public class SearchResultActivity extends AppCompatActivity {
                         return o1.getDuration().compareTo(o2.getDuration());
                     }
                 });
+                currentCardCount = 0;
+                nextCardCount = 5;
+                clearCards();
+                createJourneyCards();
+            }
+        });
+
+        showMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextCardCount += 5;
                 createJourneyCards();
             }
         });
@@ -120,6 +145,8 @@ public class SearchResultActivity extends AppCompatActivity {
         JSONObject toParamsJSON = null;
         JSONArray fromRoutesJSON = null;
         JSONObject fromParamsJSON = null;
+        Calendar calendar = Calendar.getInstance();
+        Log.v("TEST", "Loading JSONS " + calendar.getTimeInMillis());
         try {
             trips = response.getJSONObject("ResponseBody").getJSONArray("Entities").getJSONObject(0).getJSONArray("trips");
         } catch (JSONException e) {
@@ -138,6 +165,7 @@ public class SearchResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Log.v("TEST", "Loading routes " + calendar.getTimeInMillis());
         if (toRoutesJSON != null){
             for (int i = 0; i < toRoutesJSON.length(); i++) {
                 try {
@@ -158,6 +186,7 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         }
 
+        Log.v("TEST", "Loading trips " + calendar.getTimeInMillis());
         for (Trip forward: toTrips)
         {
             if (fromTrips.isEmpty()) {
@@ -175,10 +204,18 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private void createJourneyCards()
     {
+        TextView nothingFound = findViewById(R.id.nothingFoundTextView);
+        if (journeys.size() == 0){
+            nothingFound.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            nothingFound.setVisibility(View.GONE);
+        }
         LinearLayout cardContainer = findViewById(R.id.cardContainer);
-        ((ViewGroup)cardContainer).removeAllViewsInLayout();
-        for(Journey journey : journeys)
+        for(int i = currentCardCount; i < nextCardCount && i < journeys.size(); i++)
         {
+            Journey journey = journeys.get(i);
+
             CardView card = null;
             if (isOneWay.equals("true")) {
                 card = LayoutInflater.from(getApplicationContext()).inflate(R.layout.flight_card_half, null).findViewById(R.id.cardTemplate);
@@ -219,6 +256,16 @@ public class SearchResultActivity extends AppCompatActivity {
             }
 
             cardContainer.addView(card);
+            currentCardCount++;
         }
+
+        if (currentCardCount < journeys.size())
+            showMoreButton.setVisibility(View.VISIBLE);
+        else showMoreButton.setVisibility(View.GONE);
+    }
+
+    private void clearCards(){
+        LinearLayout cardContainer = findViewById(R.id.cardContainer);
+        ((ViewGroup)cardContainer).removeAllViewsInLayout();
     }
 }

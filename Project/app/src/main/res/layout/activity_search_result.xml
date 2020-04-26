@@ -61,7 +61,24 @@
                 android:shadowDx="0"
                 android:shadowDy="30"
                 android:shadowRadius="50">
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/nothingFoundTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No flights found"
+                android:visibility="gone"
+                android:textAlignment="center"/>
+
+            <Button
+                android:id="@+id/showMoreButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="Show more"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>
