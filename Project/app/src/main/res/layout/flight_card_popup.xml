@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/pupup_close_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Close" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/totalPriceTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Total price: " />
+
+            <TextView
+                android:id="@+id/totalPriceDisplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Euros"
+                android:layout_weight="5"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Outbound journey" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/totalDurationTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Total duration: " />
+
+            <TextView
+                android:id="@+id/totalOutboundDurationDisplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Hours"
+                android:layout_weight="5"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flights:" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+            <LinearLayout
+                android:id="@+id/outboundFlights"
+                android:orientation="vertical"
+                android:layout_weight="8">
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inbound journey" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Total duration: " />
+
+            <TextView
+                android:id="@+id/totalInboundDurationDisplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Hours"
+                android:layout_weight="5"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flights:" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent">
+            <LinearLayout
+                android:id="@+id/inboundFlights"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="8">
+
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment {
         if (AIRPORTS.isEmpty()){
             RebusNeoConnector connector = RebusNeoConnector.getInstance(getContext());
 
-            connector.SendRequest(connector.GET_AIRPORTS,null, new IResponseListener() {
+            connector.SendRequest(connector.GET, connector.GET_AIRPORTS,null, new IResponseListener() {
                 @Override
                 public void onResponse(Object response) {
                     loadSearchSuggestions((JSONObject) response);
@@ -168,12 +168,8 @@ public class SearchFragment extends Fragment {
 
                 if (arrivalDate != null && Date.compare(arrivalDate, departureDate)){
                     arrivalDatePicker.setError(getString(R.string.arrival_date_lower_error));
+                    hasErrors = true;
                 }
-
-//                if (arrivalDate == null && !isOneWay){
-//                    arrivalDatePicker.setError(getString(R.string.arrival_date_missing_error));
-//                    hasErrors = true;
-//                }
 
 //                if (numberOfPassengers == null){
 //                    passengerEditText.setError(getString(R.string.passenger_missing_error));
@@ -190,6 +186,8 @@ public class SearchFragment extends Fragment {
                 bundle.putString("ARRIVAL_DATE", arrivalDate);
                 bundle.putString("ONLY_DIRECT", Boolean.toString(allowOnlyDirectFlights));
                 bundle.putString("IS_ONE_WAY", Boolean.toString(isOneWay));
+
+                Log.v("nx", Boolean.toString(isOneWay));
 
                 Fragment fragment = new SearchResultFragment();
                 fragment.setArguments(bundle);

@@ -5,8 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.rebusmobile.Flight;
 import com.example.rebusmobile.IResponseListener;
 import com.example.rebusmobile.Journey;
 import com.example.rebusmobile.R;
@@ -76,7 +80,7 @@ public class SearchResultFragment extends Fragment {
         String request = connector.getJourneyRequest(departureAirport, arrivalAirport, departureDate, arrivalDate, isOneWay, onlyDirect);
         Log.v("TEST", request);
 
-        connector.SendRequest(connector.REQUEST_FLIGHTS,request, new IResponseListener() {
+        connector.SendRequest(connector.GET, connector.REQUEST_FLIGHTS,request, new IResponseListener() {
             @Override
             public void onResponse(Object response) {
                 loadJourneys((JSONObject) response);
@@ -110,15 +114,15 @@ public class SearchResultFragment extends Fragment {
         sortByMostExpensiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Collections.sort(journeys, new Comparator<Journey>() {
-//                    public int compare(Journey o1, Journey o2) {
-//                        return o2.getPrice().compareTo(o1.getPrice());
-//                    }
-//                });
-//                currentCardCount = 0;
-//                nextCardCount = 5;
-//                clearCards();
-//                createJourneyCards();
+                Collections.sort(journeys, new Comparator<Journey>() {
+                    public int compare(Journey o1, Journey o2) {
+                        return o1.getBest().compareTo(o2.getBest());
+                    }
+                });
+                currentCardCount = 0;
+                nextCardCount = 5;
+                clearCards();
+                createJourneyCards();
             }
         });
 
@@ -227,14 +231,14 @@ public class SearchResultFragment extends Fragment {
         LinearLayout cardContainer = getView().findViewById(R.id.cardContainer);
         for(int i = currentCardCount; i < nextCardCount && i < journeys.size(); i++)
         {
-            Journey journey = journeys.get(i);
+            final Journey journey = journeys.get(i);
 
             CardView card = null;
-            if (isOneWay.equals("true")) {
-                card = LayoutInflater.from(getContext()).inflate(R.layout.flight_card_half, null).findViewById(R.id.cardTemplate);
+            if (isOneWay.equals("false") && journey.getBackward() != null) {
+                card = LayoutInflater.from(getContext()).inflate(R.layout.flight_card, null).findViewById(R.id.cardTemplate);
                 ((ViewGroup) card.getParent()).removeView(card);
             } else {
-                card = LayoutInflater.from(getContext()).inflate(R.layout.flight_card, null).findViewById(R.id.cardTemplate);
+                card = LayoutInflater.from(getContext()).inflate(R.layout.flight_card_half, null).findViewById(R.id.cardTemplate);
                 ((ViewGroup) card.getParent()).removeView(card);
             }
             ((TextView)card.findViewById(R.id.cardToDepartureAirport)).setText(journey.getForward().getRoute().getRouteStart().getDepartureAirport().getName());
@@ -252,7 +256,7 @@ public class SearchResultFragment extends Fragment {
             ((TextView)card.findViewById(R.id.cardToStops)).setText(stopsToText);
 
 
-            if (isOneWay.equals("false")) {
+            if (isOneWay.equals("false") && journey.getBackward() != null) {
                 ((TextView)card.findViewById(R.id.cardBackDepartureAirport)).setText(journey.getBackward().getRoute().getRouteStart().getDepartureAirport().getName());
                 ((TextView)card.findViewById(R.id.cardBackArrivalAirport)).setText(journey.getBackward().getRoute().getRouteEnd().getArrivalAirport().getName());
                 ((TextView)card.findViewById(R.id.cardBackDepartureTime)).setText(journey.getBackward().getRoute().getRouteStart().getDepartureTime());
@@ -268,6 +272,62 @@ public class SearchResultFragment extends Fragment {
                 ((TextView)card.findViewById(R.id.cardBackStops)).setText(stopsBackText);
             }
 
+
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View popupView = null;
+                    if (isOneWay.equals("false") && journey.getBackward() != null) {
+                        popupView = LayoutInflater.from(getActivity()).inflate(R.layout.flight_card_popup, null);
+                    } else {
+                        popupView = LayoutInflater.from(getActivity()).inflate(R.layout.flight_card_popup_half, null);
+                    }
+
+                    final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+                    Button closePopup = popupView.findViewById(R.id.pupup_close_button);
+                    closePopup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                        }
+                    });
+
+                    ((TextView)popupView.findViewById(R.id.totalPriceDisplay)).setText(journey.getPrice().toString() + "€");
+                    ((TextView)popupView.findViewById(R.id.totalOutboundDurationDisplay)).setText(journey.getForward().getRoute().getTotalTime());
+                    ArrayList<Flight> flights = journey.getForward().getRoute().getFlightList();
+
+                    LinearLayout outboundFlightContainer = (LinearLayout)popupView.findViewById(R.id.outboundFlights);
+
+                    for (Flight flight : flights) {
+                        TableLayout outboundFlight = LayoutInflater.from(getActivity()).inflate(R.layout.flight_info, null).findViewById(R.id.flightInfo);
+                        ((TextView)outboundFlight.findViewById(R.id.departureAirport)).setText(flight.getDepartureAirport().getName());
+                        ((TextView)outboundFlight.findViewById(R.id.departureTime)).setText(flight.getDepartureTime());
+                        ((TextView)outboundFlight.findViewById(R.id.arrivalAirport)).setText(flight.getArrivalAirport().getName());
+                        ((TextView)outboundFlight.findViewById(R.id.arrivalTime)).setText(flight.getArrivalTime());
+                        outboundFlightContainer.addView(outboundFlight);
+                    }
+
+                    if (isOneWay.equals("false") && journey.getBackward() != null) {
+                        ((TextView)popupView.findViewById(R.id.totalInboundDurationDisplay)).setText(journey.getBackward().getRoute().getTotalTime());
+                        ArrayList<Flight> inboundFlights = journey.getBackward().getRoute().getFlightList();
+
+                        LinearLayout inboundFlightContainer = (LinearLayout)popupView.findViewById(R.id.inboundFlights);
+
+                        for (Flight flight : inboundFlights) {
+                            TableLayout inboundFlight = LayoutInflater.from(getActivity()).inflate(R.layout.flight_info, null).findViewById(R.id.flightInfo);
+                            ((TextView)inboundFlight.findViewById(R.id.departureAirport)).setText(flight.getDepartureAirport().getName());
+                            ((TextView)inboundFlight.findViewById(R.id.departureTime)).setText(flight.getDepartureTime());
+                            ((TextView)inboundFlight.findViewById(R.id.arrivalAirport)).setText(flight.getArrivalAirport().getName());
+                            ((TextView)inboundFlight.findViewById(R.id.arrivalTime)).setText(flight.getArrivalTime());
+                            inboundFlightContainer.addView(inboundFlight);
+                        }
+
+                    }
+
+                    popupWindow.showAsDropDown(popupView, 0, 0);
+                }
+            });
             cardContainer.addView(card);
             currentCardCount++;
         }

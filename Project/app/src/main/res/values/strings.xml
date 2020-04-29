@@ -5,6 +5,16 @@
     <string name="departure_date_missing_error">Missing</string>
     <string name="arrival_date_missing_error">Missing</string>
     <string name="passenger_missing_error">Missing</string>
+
+    <string name="login_username_missing_error">Missing</string>
+    <string name="login_password_missing_error">Missing</string>
+
+    <string name="register_username_missing_error">Missing</string>
+    <string name="register_email_missing_error">Missing</string>
+    <string name="register_password_missing_error">Missing</string>
+    <string name="register_confirm_password_missing_error">Missing</string>
+    <string name="register_password_match_error">Passwords must match</string>
+
     <string name="arrival_date_lower_error">Must be later</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -17,6 +27,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_search">Search flights</string>
     <string name="menu_log_in">Log In</string>
+    <string name="menu_register">Register</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

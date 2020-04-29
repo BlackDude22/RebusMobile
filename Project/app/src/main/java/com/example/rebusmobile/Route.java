@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Route {
     private String price;
     private String totalTime;
+    private int best;
     private ArrayList<Flight> flightList = new ArrayList<>();
 
     public Route(JSONObject route)
@@ -16,6 +17,7 @@ public class Route {
         try {
             price = route.getString("price");
             totalTime = route.getString("timeSpan");
+            best = route.getInt("best");
             JSONArray flights = route.getJSONArray("flights");
             for (int i = 0; i < flights.length(); i++)
             {
@@ -34,6 +36,10 @@ public class Route {
         return totalTime;
     }
 
+    public int getBest() {
+        return best;
+    }
+
     public Flight getRouteStart() {
         return flightList.get(0);
     }
@@ -46,4 +52,7 @@ public class Route {
         return flightList.size();
     }
 
+    public ArrayList<Flight> getFlightList() {
+        return flightList;
+    }
 }

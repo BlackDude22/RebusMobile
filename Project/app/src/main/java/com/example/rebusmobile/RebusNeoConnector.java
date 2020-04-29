@@ -1,9 +1,11 @@
 package com.example.rebusmobile;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +25,11 @@ public class RebusNeoConnector {
 
     final public String GET_AIRPORTS = "/locations";
     final public String REQUEST_FLIGHTS = "/journey";
+    final public String REQUEST_LOGIN = "/login";
+    final public String REQUEST_REGISTER = "/register";
+
+    final public int GET = Request.Method.GET;
+    final public int POST = Request.Method.POST;
 
     static RebusNeoConnector instance = null;
 
@@ -39,14 +46,16 @@ public class RebusNeoConnector {
         return instance;
     }
 
-    public void SendRequest(String action, String request, final IResponseListener listener)
+    public void SendRequest(int requestMethod, String action, String request, final IResponseListener listener)
     {
         String completeAction = url + action;
         if (request != null)
             completeAction += request;
 
+        Log.v("Connector", completeAction);
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (completeAction, null, new Response.Listener<JSONObject>() {
+                (requestMethod, completeAction, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -81,5 +90,16 @@ public class RebusNeoConnector {
     public String getJourneyRequest(String origin, String destination, String depDate, String retDate, String isOneWay, String onlyDirect)
     {
         return "?origin=" + origin + "&destination=" + destination + "&depDate=" + depDate + "&retDate=" + retDate + "&isOneWay=" + isOneWay + "&onlyDirect=" + onlyDirect;
+    }
+
+    public String getLoginRequest(String username, String password)
+    {
+        return "?username=" + username + "&password=" + password;
+
+    }
+
+    public String getRegisterRequest(String username, String password, String email)
+    {
+        return "?username=" + username + "&email=" + email + "&password=" + password;
     }
 }
