@@ -27,6 +27,10 @@ public class RebusNeoConnector {
     final public String REQUEST_FLIGHTS = "/journey";
     final public String REQUEST_LOGIN = "/login";
     final public String REQUEST_REGISTER = "/register";
+    final public String REQUEST_PASSWORD_CHANGE = "/changepass";
+    final public String REQUEST_PERSONAL_INFO = "/personalinfo";
+    final public String REQUEST_BALANCE = "/personalbalance";
+    final public String REQUEST_ORDER_JOURNEY = "/orderjourney";
 
     final public int GET = Request.Method.GET;
     final public int POST = Request.Method.POST;
@@ -46,7 +50,7 @@ public class RebusNeoConnector {
         return instance;
     }
 
-    public void SendRequest(int requestMethod, String action, String request, final IResponseListener listener)
+    public void sendRequest(int requestMethod, String action, String request, final IResponseListener listener)
     {
         String completeAction = url + action;
         if (request != null)
@@ -101,5 +105,53 @@ public class RebusNeoConnector {
     public String getRegisterRequest(String username, String password, String email)
     {
         return "?username=" + username + "&email=" + email + "&password=" + password;
+    }
+
+    public String getChangePasswordRequest(String username, String password, String newPassword)
+    {
+        return "?username=" + username + "&password=" + password + "&newpassword=" + newPassword;
+    }
+
+    public String getPersonalInfoGetRequest(String token, String id)
+    {
+        return "?token=" + token + "&userid=" + id;
+    }
+
+    public String getChangeFirstNameRequest(String token, String id, String firstName)
+    {
+        return "?token=" + token + "&userid=" + id + "&firstname=" + firstName;
+    }
+
+    public String getChangeLastNameRequest(String token, String id, String lastName)
+    {
+        return "?token=" + token + "&userid=" + id + "&lastname=" + lastName;
+    }
+
+    public String getChangePhoneRequest(String token, String id, String phone)
+    {
+        return "?token=" + token + "&userid=" + id + "&phonenumber=" + phone;
+    }
+
+    public String getChangeAddressRequest(String token, String id, String country, String city, String street, String house)
+    {
+        return "?token=" + token + "&userid=" + id + "&country=" + country + "&city=" + city + "&street=" + street + "&house=" + house;
+    }
+
+    public String getBalanceGetRequest(String token, String id)
+    {
+        return "?token=" + token + "&userid=" + id;
+    }
+
+    public String getBalancePostRequest(String token, String id, String add)
+    {
+        return "?token=" + token + "&userid=" + id + "&addbal=" + add;
+    }
+
+    public String getChangePersonalInfoRequest(String token, String id, String firstName, String lastName, String phone, String country, String city, String street, String house){
+        return "?token=" + token + "&userid=" + id + "&firstname=" + firstName+ "&lastname=" + lastName + "&phonenumber=" + phone + "&country=" + country + "&city=" + city + "&street=" + street + "&house=" + house;
+    }
+
+    public String getOrderJourneyRequest(String token, String id, String flightList){
+        return "?token=" + token + "&userid=" + id + "&flightlist=" + flightList;
     }
 }

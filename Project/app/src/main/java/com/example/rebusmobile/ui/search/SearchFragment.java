@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment {
         if (AIRPORTS.isEmpty()){
             RebusNeoConnector connector = RebusNeoConnector.getInstance(getContext());
 
-            connector.SendRequest(connector.GET, connector.GET_AIRPORTS,null, new IResponseListener() {
+            connector.sendRequest(connector.GET, connector.GET_AIRPORTS,null, new IResponseListener() {
                 @Override
                 public void onResponse(Object response) {
                     loadSearchSuggestions((JSONObject) response);

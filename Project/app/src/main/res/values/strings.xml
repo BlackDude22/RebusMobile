@@ -15,6 +15,19 @@
     <string name="register_confirm_password_missing_error">Missing</string>
     <string name="register_password_match_error">Passwords must match</string>
 
+    <string name="change_password_missing_error">Missing</string>
+    <string name="change_new_password_missing_error">Missing</string>
+    <string name="change_confirm_new_password_missing_error">Missing</string>
+    <string name="change_password_match_error">Passwords must match</string>
+    <string name="change_first_name_missing_error">Missing</string>
+    <string name="change_last_name_missing_error">Missing</string>
+    <string name="change_phone_missing_error">Missing</string>
+    <string name="change_address_country_missing_error">Missing</string>
+    <string name="change_address_city_missing_error">Missing</string>
+    <string name="change_address_street_missing_error">Missing</string>
+    <string name="change_address_house_number_missing_error">Missing</string>
+    <string name="change_balance_missing_error">Missing</string>
+
     <string name="arrival_date_lower_error">Must be later</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -28,6 +41,16 @@
     <string name="menu_search">Search flights</string>
     <string name="menu_log_in">Log In</string>
     <string name="menu_register">Register</string>
+    <string name="menu_log_out">Log Out</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_change_first_name">Change First Name</string>
+    <string name="menu_change_last_name">Change Last Name</string>
+    <string name="menu_change_email">Change Email</string>
+    <string name="menu_change_balance">Add Funds</string>
+    <string name="menu_change_password">Change Password</string>
+    <string name="menu_change_phone">Change Phone Number</string>
+    <string name="menu_change_address">Change Address</string>
+    <string name="menu_confirm_purchase">Confirm Purchase</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

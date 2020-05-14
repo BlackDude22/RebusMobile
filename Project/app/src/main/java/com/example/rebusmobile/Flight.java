@@ -42,4 +42,8 @@ public class Flight {
     public Airport getArrivalAirport() {
         return arrivalAirport;
     }
+
+    public String getID() {
+        return ID;
+    }
 }

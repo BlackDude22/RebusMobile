@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.rebusmobile.Flight;
 import com.example.rebusmobile.IResponseListener;
@@ -24,6 +26,7 @@ import com.example.rebusmobile.Journey;
 import com.example.rebusmobile.R;
 import com.example.rebusmobile.RebusNeoConnector;
 import com.example.rebusmobile.Trip;
+import com.example.rebusmobile.UserSettings;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,7 +83,7 @@ public class SearchResultFragment extends Fragment {
         String request = connector.getJourneyRequest(departureAirport, arrivalAirport, departureDate, arrivalDate, isOneWay, onlyDirect);
         Log.v("TEST", request);
 
-        connector.SendRequest(connector.GET, connector.REQUEST_FLIGHTS,request, new IResponseListener() {
+        connector.sendRequest(connector.GET, connector.REQUEST_FLIGHTS,request, new IResponseListener() {
             @Override
             public void onResponse(Object response) {
                 loadJourneys((JSONObject) response);
@@ -293,6 +296,20 @@ public class SearchResultFragment extends Fragment {
                         }
                     });
 
+                    Button purchaseButton = popupView.findViewById(R.id.purchaseButton);
+                    purchaseButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                            UserSettings.setSelectedJourney(journey);
+                            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                            navController.navigate(R.id.nav_confirm_purchase);
+                        }
+                    });
+
+                    if (!UserSettings.isIsLoggedIn())
+                        purchaseButton.setVisibility(View.GONE);
+
                     ((TextView)popupView.findViewById(R.id.totalPriceDisplay)).setText(journey.getPrice().toString() + "€");
                     ((TextView)popupView.findViewById(R.id.totalOutboundDurationDisplay)).setText(journey.getForward().getRoute().getTotalTime());
                     ArrayList<Flight> flights = journey.getForward().getRoute().getFlightList();
@@ -322,6 +339,7 @@ public class SearchResultFragment extends Fragment {
                             ((TextView)inboundFlight.findViewById(R.id.arrivalTime)).setText(flight.getArrivalTime());
                             inboundFlightContainer.addView(inboundFlight);
                         }
+
 
                     }
 

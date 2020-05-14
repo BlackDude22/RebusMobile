@@ -1,5 +1,4 @@
-package com.example.rebusmobile.ui.register;
-
+package com.example.rebusmobile.ui.change_first_name;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,62 +18,39 @@ import androidx.navigation.Navigation;
 import com.example.rebusmobile.IResponseListener;
 import com.example.rebusmobile.R;
 import com.example.rebusmobile.RebusNeoConnector;
+import com.example.rebusmobile.UserSettings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RegisterFragment extends Fragment {
-
-
+public class ChangeFirstNameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        return inflater.inflate(R.layout.fragment_change_first_name, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Button registerButton = getView().findViewById(R.id.registerButton);
-        final EditText usernameEditText = getView().findViewById(R.id.registerUsernameEditText);
-        final EditText emailEditText = getView().findViewById(R.id.registerEmailEditText);
-        final EditText passwordEditText = getView().findViewById(R.id.registerPasswordEditText);
-        final EditText confirmPasswordEditText = getView().findViewById(R.id.registerConfirmPasswordEditText);
+        final EditText firstNameEditText = getActivity().findViewById(R.id.newFirstNameEditText);
+        final Button button = getActivity().findViewById(R.id.changeFirstNameButton);
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        if (!UserSettings.getName().equals("null"))
+            firstNameEditText.setText(UserSettings.getName());
+
+
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String confirmPassword = confirmPasswordEditText.getText().toString();
+                String newFirstName = firstNameEditText.getText().toString();
 
                 boolean hasErrors = false;
 
-                if (username.isEmpty()){
-                    usernameEditText.setError(getString(R.string.register_username_missing_error));
-                    hasErrors = true;
-                }
-
-                if (email.isEmpty()) {
-                    emailEditText.setError(getString(R.string.register_email_missing_error));
-                    hasErrors = true;
-                }
-
-                if (password.isEmpty()){
-                    passwordEditText.setError(getString(R.string.register_password_missing_error));
-                    hasErrors = true;
-                }
-
-                if (confirmPassword.isEmpty()){
-                    confirmPasswordEditText.setError(getString(R.string.register_confirm_password_missing_error));
-                    hasErrors = true;
-                }
-
-                if (!password.equals(confirmPassword)){
-                    confirmPasswordEditText.setError(getString(R.string.register_password_match_error));
+                if (newFirstName.isEmpty()){
+                    firstNameEditText.setError(getString(R.string.change_first_name_missing_error));
                     hasErrors = true;
                 }
 
@@ -82,23 +58,26 @@ public class RegisterFragment extends Fragment {
                     return;
 
                 RebusNeoConnector connector = RebusNeoConnector.getInstance(getContext());
-                connector.sendRequest(connector.POST, connector.REQUEST_REGISTER, connector.getRegisterRequest(username, password, email), new IResponseListener() {
+                connector.sendRequest(connector.POST, connector.REQUEST_PERSONAL_INFO, connector.getChangeFirstNameRequest(UserSettings.getToken(), UserSettings.getId(), newFirstName), new IResponseListener() {
                     @Override
                     public void onResponse(Object response) {
+                        Log.v("TEST", response.toString());
+
                         try {
                             JSONObject responseError = ((JSONObject)response).getJSONObject("Header").getJSONObject("ResponseError");
                             int errorCode = responseError.getInt("ErrorCode");
                             String errorMessage = responseError.getString("ErrorMessage");
                             if (errorCode == 0){
-                                Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                                UserSettings.loadPersonalInfo((JSONObject) response);
                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                                navController.navigate(R.id.nav_log_in);
+                                navController.navigate(R.id.nav_settings_logged_in);
                             }
                             else Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(String message) {
                         Log.v("TEST", message);
@@ -106,7 +85,5 @@ public class RegisterFragment extends Fragment {
                 });
             }
         });
-
-
     }
 }

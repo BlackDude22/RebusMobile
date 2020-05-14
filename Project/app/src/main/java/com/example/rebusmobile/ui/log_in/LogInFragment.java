@@ -19,8 +19,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.rebusmobile.IResponseListener;
+import com.example.rebusmobile.MainActivity;
 import com.example.rebusmobile.R;
 import com.example.rebusmobile.RebusNeoConnector;
+import com.example.rebusmobile.UserSettings;
 import com.example.rebusmobile.ui.register.RegisterFragment;
 
 import org.json.JSONException;
@@ -76,8 +78,8 @@ public class LogInFragment extends Fragment {
                 if (hasErrors)
                     return;
 
-                RebusNeoConnector connector = RebusNeoConnector.getInstance(getContext());
-                connector.SendRequest(connector.POST, connector.REQUEST_LOGIN, connector.getLoginRequest(username, password), new IResponseListener() {
+                final RebusNeoConnector connector = RebusNeoConnector.getInstance(getContext());
+                connector.sendRequest(connector.POST, connector.REQUEST_LOGIN, connector.getLoginRequest(username, password), new IResponseListener() {
                     @Override
                     public void onResponse(Object response) {
                         try {
@@ -85,7 +87,37 @@ public class LogInFragment extends Fragment {
                             int errorCode = responseError.getInt("ErrorCode");
                             String errorMessage = responseError.getString("ErrorMessage");
                             if (errorCode == 0){
+                                ((MainActivity)getActivity()).setLoggedIn();
                                 Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                                UserSettings.initialize((JSONObject)response);
+
+                                connector.sendRequest(connector.GET, connector.REQUEST_PERSONAL_INFO, connector.getPersonalInfoGetRequest(UserSettings.getToken(), UserSettings.getId()), new IResponseListener() {
+                                    @Override
+                                    public void onResponse(Object response) {
+                                        Log.v("TEST", response.toString());
+                                        UserSettings.loadPersonalInfo((JSONObject) response);
+
+                                        connector.sendRequest(connector.GET, connector.REQUEST_BALANCE, connector.getBalanceGetRequest(UserSettings.getToken(), UserSettings.getId()), new IResponseListener() {
+                                            @Override
+                                            public void onResponse(Object response) {
+                                                Log.v("TEST BALANCE", response.toString());
+                                                UserSettings.loadBalance((JSONObject) response);
+                                            }
+
+                                            @Override
+                                            public void onError(String message) {
+                                                Log.v("Test", message);
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onError(String message) {
+                                        Log.v("Test", message);
+                                    }
+                                });
+
+
                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                                 navController.navigate(R.id.nav_home);
                             }

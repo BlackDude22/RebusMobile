@@ -29,4 +29,69 @@
         android:label="@string/menu_register"
         tools:layout="@layout/fragment_register" />
 
+    <fragment
+        android:id="@+id/nav_log_out"
+        android:name="com.example.rebusmobile.ui.log_out.LogOutFragment"
+        android:label="@string/menu_log_out"
+        tools:layout="@layout/fragment_log_out" />
+
+    <fragment
+        android:id="@+id/nav_settings_logged_out"
+        android:name="com.example.rebusmobile.ui.settings_logged_out.SettingsLoggedOutFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings_logged_out" />
+
+    <fragment
+        android:id="@+id/nav_settings_logged_in"
+        android:name="com.example.rebusmobile.ui.settings_logged_in.SettingsLoggedInFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings_logged_in" />
+
+    <fragment
+        android:id="@+id/nav_change_first_name"
+        android:name="com.example.rebusmobile.ui.change_first_name.ChangeFirstNameFragment"
+        android:label="@string/menu_change_first_name"
+        tools:layout="@layout/fragment_change_first_name" />
+
+    <fragment
+        android:id="@+id/nav_change_last_name"
+        android:name="com.example.rebusmobile.ui.change_last_name.ChangeLastNameFragment"
+        android:label="@string/menu_change_last_name"
+        tools:layout="@layout/fragment_change_last_name" />
+
+    <fragment
+        android:id="@+id/nav_change_email"
+        android:name="com.example.rebusmobile.ui.change_email.ChangeEmailFragment"
+        android:label="@string/menu_change_email"
+        tools:layout="@layout/fragment_change_email" />
+
+    <fragment
+        android:id="@+id/nav_change_balance"
+        android:name="com.example.rebusmobile.ui.change_balance.ChangeBalanceFragment"
+        android:label="@string/menu_change_balance"
+        tools:layout="@layout/fragment_change_funds" />
+
+    <fragment
+        android:id="@+id/nav_change_password"
+        android:name="com.example.rebusmobile.ui.change_password.ChangePasswordFragment"
+        android:label="@string/menu_change_password"
+        tools:layout="@layout/fragment_change_password" />
+
+    <fragment
+        android:id="@+id/nav_change_phone"
+        android:name="com.example.rebusmobile.ui.change_phone.ChangePhoneFragment"
+        android:label="@string/menu_change_phone"
+        tools:layout="@layout/fragment_change_phone" />
+
+    <fragment
+        android:id="@+id/nav_change_address"
+        android:name="com.example.rebusmobile.ui.change_address.ChangeAddressFragment"
+        android:label="@string/menu_change_address"
+        tools:layout="@layout/fragment_change_address" />
+
+    <fragment
+        android:id="@+id/nav_confirm_purchase"
+        android:name="com.example.rebusmobile.ui.confirm_purchase.ConfirmPurchaseFragment"
+        android:label="@string/menu_confirm_purchase"
+        tools:layout="@layout/fragment_confirm_purchase" />
 </navigation>
