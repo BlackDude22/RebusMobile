@@ -17,17 +17,18 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.rebusmobile.Airport;
 import com.example.rebusmobile.CountryMap;
 import com.example.rebusmobile.Date;
 import com.example.rebusmobile.IResponseListener;
+import com.example.rebusmobile.MainActivity;
 import com.example.rebusmobile.R;
 import com.example.rebusmobile.RebusNeoConnector;
-import com.example.rebusmobile.ui.search_result.SearchResultFragment;
+import com.example.rebusmobile.UserSettings;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -171,13 +172,16 @@ public class SearchFragment extends Fragment {
                     hasErrors = true;
                 }
 
-//                if (numberOfPassengers == null){
-//                    passengerEditText.setError(getString(R.string.passenger_missing_error));
-//                    hasErrors = true;
-//                }
+                if (numberOfPassengers == null){
+                    passengerEditText.setError(getString(R.string.passenger_missing_error));
+                    hasErrors = true;
+                }
 
                 if (hasErrors)
                     return;
+
+                UserSettings.addSearchItem(departureAirport, arrivalAirport, departureDate, arrivalDate, numberOfPassengers, isOneWay, allowOnlyDirectFlights);
+                ((MainActivity)getActivity()).saveHistory();
 
                 Bundle bundle = new Bundle();
                 bundle.putString("DEPARTURE_AIRPORT", departureAirport);
@@ -187,14 +191,8 @@ public class SearchFragment extends Fragment {
                 bundle.putString("ONLY_DIRECT", Boolean.toString(allowOnlyDirectFlights));
                 bundle.putString("IS_ONE_WAY", Boolean.toString(isOneWay));
 
-                Log.v("nx", Boolean.toString(isOneWay));
-
-                Fragment fragment = new SearchResultFragment();
-                fragment.setArguments(bundle);
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
-                fragmentTransaction.commit();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_search_result, bundle);
             }
         });
 

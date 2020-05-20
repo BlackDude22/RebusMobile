@@ -94,4 +94,22 @@
         android:name="com.example.rebusmobile.ui.confirm_purchase.ConfirmPurchaseFragment"
         android:label="@string/menu_confirm_purchase"
         tools:layout="@layout/fragment_confirm_purchase" />
+
+    <fragment
+        android:id="@+id/nav_search_history"
+        android:name="com.example.rebusmobile.ui.search_history.SearchHistoryFragment"
+        android:label="@string/menu_search_history"
+        tools:layout="@layout/fragment_search_history" />
+
+    <fragment
+        android:id="@+id/nav_search_result"
+        android:name="com.example.rebusmobile.ui.search_result.SearchResultFragment"
+        android:label="@string/menu_search"
+        tools:layout="@layout/fragment_search_result" />
+
+    <fragment
+        android:id="@+id/nav_tickets"
+        android:name="com.example.rebusmobile.ui.tickets.TicketsFragment"
+        android:label="@string/menu_tickets"
+        tools:layout="@layout/fragment_tickets" />
 </navigation>

@@ -1,6 +1,7 @@
 package com.example.rebusmobile.ui.log_out;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.rebusmobile.IResponseListener;
 import com.example.rebusmobile.MainActivity;
 import com.example.rebusmobile.R;
+import com.example.rebusmobile.RebusNeoConnector;
 import com.example.rebusmobile.UserSettings;
 
 public class LogOutFragment extends Fragment {
@@ -33,10 +36,21 @@ public class LogOutFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserSettings.clear();
-                ((MainActivity)getActivity()).setLoggedOut();
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.nav_home);
+                RebusNeoConnector connector = RebusNeoConnector.getInstance(getContext());
+                connector.sendRequest(connector.POST, connector.REQUEST_LOG_OUT, connector.getLogOutRequest(UserSettings.getToken(), UserSettings.getId()), new IResponseListener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        UserSettings.clear();
+                        ((MainActivity)getActivity()).setLoggedOut();
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                        navController.navigate(R.id.nav_home);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        Log.v("TEST", message);
+                    }
+                });
             }
         });
     }

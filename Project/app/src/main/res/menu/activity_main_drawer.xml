@@ -3,13 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/flight_group">
         <item
             android:id="@+id/nav_home"
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_search"
             android:title="@string/menu_search" />
+        <item
+            android:id="@+id/nav_search_history"
+            android:title="@string/menu_search_history" />
     </group>
     <group android:checkableBehavior="single"
         android:id="@+id/personal_group">

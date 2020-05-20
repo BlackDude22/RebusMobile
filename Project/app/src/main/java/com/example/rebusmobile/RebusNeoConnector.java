@@ -31,6 +31,9 @@ public class RebusNeoConnector {
     final public String REQUEST_PERSONAL_INFO = "/personalinfo";
     final public String REQUEST_BALANCE = "/personalbalance";
     final public String REQUEST_ORDER_JOURNEY = "/orderjourney";
+    final public String REQUEST_LOG_OUT = "/logout";
+    final public String REQUEST_ORDERS = "/orderjourney";
+    final public String REQUEST_FLIGHT_INFO = "/flight";
 
     final public int GET = Request.Method.GET;
     final public int POST = Request.Method.POST;
@@ -153,5 +156,17 @@ public class RebusNeoConnector {
 
     public String getOrderJourneyRequest(String token, String id, String flightList){
         return "?token=" + token + "&userid=" + id + "&flightlist=" + flightList;
+    }
+
+    public String getLogOutRequest(String token, String id){
+        return "?token=" + token + "&userid=" + id;
+    }
+
+    public String getOrdersRequest(String token, String id){
+        return "?token=" + token + "&userid=" + id;
+    }
+
+    public String getFlightInfoRequest(String flightId){
+        return "?flightId=" + flightId;
     }
 }

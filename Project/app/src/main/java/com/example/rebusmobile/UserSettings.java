@@ -1,9 +1,14 @@
 package com.example.rebusmobile;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserSettings {
+import java.util.ArrayList;
+
+public class UserSettings extends AppCompatActivity {
     private static boolean isDarkTheme = false;
     private static boolean isLoggedIn = false;
     private static String token;
@@ -19,6 +24,8 @@ public class UserSettings {
     private static String house;
     private static String balance;
     private static Journey selectedJourney;
+    private static ArrayList<SearchItem> previousSearches = new ArrayList<>();
+    private static ArrayList<Ticket> tickets = new ArrayList<>();
 
     public static void initialize(JSONObject response){
         try {
@@ -60,6 +67,30 @@ public class UserSettings {
         }
     }
 
+    public static void initializeTickets(JSONObject response){
+        try {
+            updateToken(response);
+            JSONArray entities = response.getJSONObject("ResponseBody").getJSONArray("Entities");
+            for (int i = 0; i < entities.length(); i++){
+                JSONArray flights = entities.getJSONObject(i).getJSONArray("flights");
+                for (int j = 0; j < flights.length(); j++){
+                    tickets.add(new Ticket(flights.getString(j)));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadTickets(){
+//        tickets.add(new Ticket());
+    }
+
+    public static void loadSearchItems(ArrayList<SearchItem> history){
+        if (history != null)
+            previousSearches = history;
+    }
+
     public static void clear(){
         token = null;
         id = null;
@@ -99,16 +130,8 @@ public class UserSettings {
         return username;
     }
 
-    public static void setUsername(String username) {
-        UserSettings.username = username;
-    }
-
     public static String getEmail() {
         return email;
-    }
-
-    public static void setEmail(String email) {
-        UserSettings.email = email;
     }
 
     public static String getId() {
@@ -161,5 +184,17 @@ public class UserSettings {
 
     public static void setIsLoggedIn(boolean isLoggedIn) {
         UserSettings.isLoggedIn = isLoggedIn;
+    }
+
+    public static ArrayList<SearchItem> getPreviousSearches() {
+        return previousSearches;
+    }
+
+    public static void addSearchItem(String departureAirport, String arrivalAirport, String departureDate, String returnDate, Integer passengers, Boolean isOneWay, Boolean allowOnlyDirectFlights){
+        previousSearches.add(new SearchItem(departureAirport, arrivalAirport, departureDate, returnDate, passengers, isOneWay, allowOnlyDirectFlights));
+    }
+
+    public static ArrayList<Ticket> getTickets() {
+        return tickets;
     }
 }

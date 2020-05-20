@@ -22,6 +22,20 @@ public class Airport {
         }
     }
 
+    public Airport(JSONObject airport, Boolean skipCountry)
+    {
+        try {
+            code = airport.getString("code");
+            name = airport.getString("fullName");
+            city = airport.getString("cityName");
+            if (!skipCountry) {
+                CountryMap countryMap = CountryMap.getInstance();
+                country = countryMap.get(airport.getString("countryName"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public String toString()
     {
