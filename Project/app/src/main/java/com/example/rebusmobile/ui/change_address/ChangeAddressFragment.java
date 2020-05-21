@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.rebusmobile.IResponseListener;
+import com.example.rebusmobile.MainActivity;
 import com.example.rebusmobile.R;
 import com.example.rebusmobile.RebusNeoConnector;
 import com.example.rebusmobile.UserSettings;
@@ -100,6 +101,12 @@ public class ChangeAddressFragment extends Fragment {
                                 UserSettings.loadPersonalInfo((JSONObject) response);
                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                                 navController.navigate(R.id.nav_settings_logged_in);
+                            }else if (errorCode == 999 || errorCode == 1) {
+                                UserSettings.clear();
+                                ((MainActivity)getActivity()).setLoggedOut();
+                                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                navController.navigate(R.id.nav_home);
                             }
                             else Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {

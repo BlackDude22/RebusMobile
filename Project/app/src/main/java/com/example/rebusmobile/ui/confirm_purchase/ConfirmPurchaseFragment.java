@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.example.rebusmobile.Flight;
 import com.example.rebusmobile.IResponseListener;
+import com.example.rebusmobile.MainActivity;
 import com.example.rebusmobile.R;
 import com.example.rebusmobile.RebusNeoConnector;
 import com.example.rebusmobile.UserSettings;
@@ -152,7 +153,7 @@ public class ConfirmPurchaseFragment extends Fragment {
                                 connector.sendRequest(connector.POST, connector.REQUEST_ORDER_JOURNEY, connector.getOrderJourneyRequest(UserSettings.getToken(), UserSettings.getId(), flightList), new IResponseListener() {
                                     @Override
                                     public void onResponse(Object response) {
-                                            try {
+                                        try {
                                             JSONObject responseError = ((JSONObject)response).getJSONObject("Header").getJSONObject("ResponseError");
                                             int errorCode = responseError.getInt("ErrorCode");
                                             String errorMessage = responseError.getString("ErrorMessage");
@@ -162,7 +163,6 @@ public class ConfirmPurchaseFragment extends Fragment {
                                                 connector.sendRequest(connector.GET, connector.REQUEST_BALANCE, connector.getBalanceGetRequest(UserSettings.getToken(), UserSettings.getId()), new IResponseListener() {
                                                     @Override
                                                     public void onResponse(Object response) {
-                                                        Log.v("TEST BALANCE", response.toString());
                                                         UserSettings.loadBalance((JSONObject) response);
                                                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                                                         navController.navigate(R.id.nav_home);
@@ -173,6 +173,12 @@ public class ConfirmPurchaseFragment extends Fragment {
                                                         Log.v("Test", message);
                                                     }
                                                 });
+                                            } else if (errorCode == 999 || errorCode == 1) {
+                                                UserSettings.clear();
+                                                ((MainActivity)getActivity()).setLoggedOut();
+                                                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                navController.navigate(R.id.nav_home);
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
